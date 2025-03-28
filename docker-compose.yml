@@ -1,0 +1,25 @@
+version: '3.6'
+
+services:
+    ###> doctrine/doctrine-bundle ###
+    database:
+        image: postgres:13-alpine
+        environment:
+            POSTGRES_DB: sms
+            # You should definitely change the password in production
+            POSTGRES_PASSWORD: root
+            POSTGRES_USER: root
+        volumes:
+            - db-data:/var/lib/postgresql/data:rw
+        ports:
+            - '5434:5432'
+            # You may use a bind-mounted host directory instead, so that it is harder to accidentally remove the volume and lose all your data!
+            # - ./docker/db/data:/var/lib/postgresql/data:rw
+    mailhog:
+        image: mailhog/mailhog
+        ports:
+            - '8025:8025' # Pour l'interface web
+            - '1025:1025' # Pour l'envoi des emails
+
+volumes:
+    db-data:
